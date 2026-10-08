@@ -1,13 +1,6 @@
-import pymupdf
-from src.shared.llm import gerar
+import sys
 
-pdf = pymupdf.open("assets/redacoes/teste.pdf")
-imagens = [pagina.get_pixmap(dpi=200).tobytes("png") for pagina in pdf]
+from src.transcricao.transcrever import transcrever_pdf
 
-prompt = (
-    "Transcreva fielmente o texto manuscrito desta redação, mantendo "
-    "os erros de ortografia do aluno. Marque palavras duvidosas como [?palavra] "
-    "e trechos ilegíveis como [ilegível]. Responda apenas com a transcrição."
-)
-partes = [gerar(prompt, imagens=[img], temperatura=0) for img in imagens]
-print("\n\n".join(partes))
+caminho = sys.argv[1] if len(sys.argv) > 1 else "assets/redacoes/teste.pdf"
+print(transcrever_pdf(caminho))

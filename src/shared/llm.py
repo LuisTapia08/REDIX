@@ -51,6 +51,8 @@ def _anthropic(prompt, imagens, sistema, temperatura) -> str:
     }
     if sistema:
         parametros["system"] = sistema
+    if temperatura is not None:
+        parametros["temperature"] = temperatura
 
     resposta = cliente.messages.create(**parametros)
     return "".join(bloco.text for bloco in resposta.content if bloco.type == "text")
